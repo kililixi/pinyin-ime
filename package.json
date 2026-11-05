@@ -1,0 +1,17 @@
+{
+  "name": "pinyin-ime-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "npm run build -w @startsi/pinyin-core && npm run build -w @startsi/vue-handwriting && npm run build -w @startsi/vue-pinyin-ime",
+    "test": "npm run test -w @startsi/pinyin-core"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "vite": "^4.5.0",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite-plugin-dts": "^3.6.0",
+    "vue": "^3.3.8"
+  }
+}

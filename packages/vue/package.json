@@ -1,0 +1,37 @@
+{
+  "name": "@startsi/vue-pinyin-ime",
+  "version": "0.1.0",
+  "description": "Vue3 中文拼音输入控件：九宫格/全键盘、词组候选、模糊音、简拼、联想，不依赖任何 UI 框架。",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": ["dist"],
+  "sideEffects": ["**/*.css"],
+  "keywords": ["vue", "pinyin", "ime", "input", "九宫格", "拼音输入法", "kiosk"],
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "dependencies": {
+    "@startsi/pinyin-core": "^0.1.0",
+    "@startsi/vue-handwriting": "^0.1.0"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.0",
+    "vue": "^3.3.8"
+  }
+}

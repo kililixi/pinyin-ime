@@ -1,0 +1,6 @@
+export { default as PinyinInput } from './PinyinInput.vue'
+export { default as CandidateBar } from './CandidateBar.vue'
+export { default as VirtualKeyboard } from './VirtualKeyboard.vue'
+export type { Props as PinyinInputProps } from './PinyinInput.vue'
+export type { LayoutName } from './types'
+export { PinyinEngine } from '@startsi/pinyin-core'
