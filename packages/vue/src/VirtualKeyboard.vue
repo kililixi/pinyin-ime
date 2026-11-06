@@ -145,7 +145,9 @@
         :class="[
           'pi-key',
           key.startsWith('{') ? 'is-fn' : '',
-          key === '{space}' ? 'is-space' : '',
+          key === '{space}' && layoutName !== 't9' && layoutName !== 'num'
+            ? 'is-space'
+            : '',
         ]"
         @pointerdown="onDown($event, key)"
         @pointerup="onUp"
@@ -162,9 +164,10 @@
 <style>
   .pi-kb {
     display: flex;
+    flex: 1 1 0;
     flex-direction: column;
     gap: 6px;
-    width: 100%;
+    min-width: 0;
   }
 
   .pi-kb-row {

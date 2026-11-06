@@ -658,6 +658,11 @@
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    min-width: 0;
+  }
+
+  .pi-body > .pi-kb {
+    min-width: 0;
   }
 
   .pi-body.is-split {
@@ -678,6 +683,10 @@
 
   .pi-body.is-stack {
     flex-direction: column;
+  }
+
+  .pi-body.is-stack > .pi-kb {
+    width: 100%;
   }
 
   .pi-body.is-stack .pi-cand {

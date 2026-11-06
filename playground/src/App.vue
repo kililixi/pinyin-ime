@@ -8,7 +8,8 @@
   const idNo = ref('')
   const free = ref('')
 
-  // 模型：playground 里放在 public/hw/，生产环境自己决定放哪
+  // 模型：playground 里放在 public/hw/，生产环境自己决定放哪。
+  // PinyinInput 内置手写也要靠它，所以两个组件都要传。
   const modelUrl = '/hw/hz.hzmodel'
   const handwritten = ref('')
 
@@ -30,7 +31,13 @@
     <div class="grid">
       <label class="field">
         <span>姓名</span>
-        <PinyinInput v-model="name" title="姓名" placeholder="请输入姓名" @commit="onCommit" />
+        <PinyinInput
+          v-model="name"
+          title="姓名"
+          placeholder="请输入姓名"
+          :model-url="modelUrl"
+          @commit="onCommit"
+        />
         <em>{{ name || '（空）' }}</em>
       </label>
 
@@ -41,6 +48,7 @@
           title="邮寄地址"
           placeholder="请输入地址"
           :max-length="120"
+          :model-url="modelUrl"
           @commit="onCommit"
         />
         <em>{{ address || '（空）' }}</em>
@@ -48,13 +56,23 @@
 
       <label class="field">
         <span>身份证号</span>
-        <PinyinInput v-model="idNo" title="身份证号" placeholder="18 位，末位可能是 X" />
+        <PinyinInput
+          v-model="idNo"
+          title="身份证号"
+          placeholder="18 位，末位可能是 X"
+          :model-url="modelUrl"
+        />
         <em>{{ idNo || '（空）' }}</em>
       </label>
 
       <label class="field span2">
         <span>自由输入（不传 title，走普通文本键盘）</span>
-        <PinyinInput v-model="free" placeholder="随便打点字" @commit="onCommit" />
+        <PinyinInput
+          v-model="free"
+          placeholder="随便打点字"
+          :model-url="modelUrl"
+          @commit="onCommit"
+        />
         <em>{{ free || '（空）' }}</em>
       </label>
     </div>
