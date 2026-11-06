@@ -1,6 +1,6 @@
 /**
  * 姓名候选：通用词表里几乎没有「王伟 / 张敏」这类人名，
- * 但自助机的第一个字段就是姓名，所以用「姓 + 常用名字用字」现拼。
+ * 但通用词表里几乎没有姓名，所以用「姓 + 常用名字用字」现拼。
  */
 import { GIVEN_NAMES, SURNAMES } from './dict/names'
 import { splitSyllables } from './fuzzy'

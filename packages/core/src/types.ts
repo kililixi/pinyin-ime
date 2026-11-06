@@ -43,7 +43,7 @@ export interface EngineOptions {
   wordBonus?: number
   /** 是否启用简拼，默认 true */
   enableInitials?: boolean
-  /** 是否生成姓名候选，默认 true（自助机第一个字段就是姓名） */
+  /** 是否生成姓名候选，默认 true */
   enableNames?: boolean
   /** 是否用二元语言模型给整句打分，默认 true（没有语料数据时自动降级） */
   useLm?: boolean
