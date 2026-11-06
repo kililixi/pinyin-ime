@@ -36,12 +36,19 @@ function alreadyPublished(name) {
 }
 
 function versionOf(name) {
-  const r = spawnSync(
-    'npm',
-    ['pkg', 'get', 'version', '-w', name],
-    { encoding: 'utf8' }
-  )
-  return (r.stdout || '').trim()
+  const r = spawnSync('npm', ['pkg', 'get', 'version', '-w', name], {
+    encoding: 'utf8',
+  })
+  const raw = (r.stdout || '').trim()
+  try {
+    const j = JSON.parse(raw)
+    // 带 -w 时返回的是 { "包名": "0.1.1" } 这样的对象
+    if (typeof j === 'string') return j
+    if (j && typeof j === 'object') return Object.values(j)[0] || ''
+  } catch {
+    return raw.replace(/^"|"$/g, '')
+  }
+  return ''
 }
 
 for (const name of PACKAGES) {

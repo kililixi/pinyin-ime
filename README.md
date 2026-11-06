@@ -20,7 +20,7 @@
 |---|---|---|
 | [`@startsi/pinyin-core`](packages/core) | 输入法内核：词图 DP、模糊音、简拼、姓名候选、bigram 语言模型。纯 TS，零框架依赖 | 2.5MB（gzip 1.4MB）<br>语言模型另 773KB |
 | [`@startsi/vue-pinyin-ime`](packages/vue) | Vue3 输入控件：九宫格 / 全键盘 / 数字键盘、候选条、弹层。**不依赖任何 UI 框架** | 24KB + 6KB CSS |
-| [`@startsi/vue-handwriting`](packages/handwriting) | Vue3 手写板：HanScribe 神经网络识别，离线 | 5.6KB + 1.5KB CSS |
+| [`@startsi/vue-handwriting`](packages/handwriting) | Vue3 手写板：HanScribe 神经网络识别，离线（已内联识别库，零外部依赖） | 23.5KB（gzip 9.9KB）+ 1.5KB CSS |
 
 ## 文档
 

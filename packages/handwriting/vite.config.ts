@@ -14,7 +14,10 @@ export default defineConfig({
     emptyOutDir: true,
     minify: false,
     rollupOptions: {
-      external: ['vue', 'hanscribe'],
+      // hanscribe 已从 npm 下架（2026-04-29），改为打包进产物：
+      // 用户不需要也不要能装它，动态 import 会落到本包的 chunk 里
+      external: ['vue'],
+      output: { inlineDynamicImports: true },
     },
   },
 })

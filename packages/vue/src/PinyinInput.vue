@@ -15,7 +15,14 @@
     preloadT9,
   } from '@startsi/pinyin-core'
   import type { Candidate, KeyInput } from '@startsi/pinyin-core'
-  import { HandwritingPad } from '@startsi/vue-handwriting'
+  import { defineAsyncComponent } from 'vue'
+
+  // 手写是可选能力：不装 @startsi/vue-handwriting 也能用拼音键盘
+  const HandwritingPad = defineAsyncComponent(() =>
+    import('@startsi/vue-handwriting')
+      .then((m) => m.HandwritingPad)
+      .catch(() => ({ render: () => null }) as unknown as never)
+  )
   import CandidateBar from './CandidateBar.vue'
   import VirtualKeyboard from './VirtualKeyboard.vue'
   import type { LayoutName } from './types'
