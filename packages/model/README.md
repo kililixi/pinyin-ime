@@ -32,3 +32,10 @@ ipcMain.handle('hw:model', () => fs.readFileSync(modelPath))
 ## 许可
 
 模型来自 [HanScribe](https://github.com/peterolson/hanscribe)（MIT）。
+
+## 许可证
+
+MIT。第三方数据与代码的来源见仓库根目录的
+[THIRD_PARTY_NOTICES.md](https://github.com/kililixi/pinyin-ime/blob/main/THIRD_PARTY_NOTICES.md)。
+
+完整 API 说明：[docs/api.md](https://github.com/kililixi/pinyin-ime/blob/main/docs/api.md)

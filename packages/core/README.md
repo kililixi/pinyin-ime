@@ -64,3 +64,10 @@ engine.setLmProvider({
 
 13 万词条 / 9.4 万拼音键，来自 jieba（MIT）+ OpenSubtitles 词频（口语权重），
 全表 OpenCC 繁转简。golden 用例见 `test/smoke.mjs`。
+
+## 许可证
+
+MIT。第三方数据与代码的来源见仓库根目录的
+[THIRD_PARTY_NOTICES.md](https://github.com/kililixi/pinyin-ime/blob/main/THIRD_PARTY_NOTICES.md)。
+
+完整 API 说明：[docs/api.md](https://github.com/kililixi/pinyin-ime/blob/main/docs/api.md)

@@ -1,5 +1,9 @@
 # pinyin-ime
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@startsi/vue-pinyin-ime.svg)](https://www.npmjs.com/package/@startsi/vue-pinyin-ime)
+[![CI](https://github.com/kililixi/pinyin-ime/actions/workflows/ci.yml/badge.svg)](https://github.com/kililixi/pinyin-ime/actions/workflows/ci.yml)
+
 中文拼音输入法组件包：九宫格 / 全键盘、词组候选、模糊音、简拼、联想，离线手写。
 
 ## 效果
@@ -17,6 +21,11 @@
 | [`@startsi/pinyin-core`](packages/core) | 输入法内核：词图 DP、模糊音、简拼、姓名候选、bigram 语言模型。纯 TS，零框架依赖 | 2.5MB（gzip 1.4MB）<br>语言模型另 773KB |
 | [`@startsi/vue-pinyin-ime`](packages/vue) | Vue3 输入控件：九宫格 / 全键盘 / 数字键盘、候选条、弹层。**不依赖任何 UI 框架** | 24KB + 6KB CSS |
 | [`@startsi/vue-handwriting`](packages/handwriting) | Vue3 手写板：HanScribe 神经网络识别，离线 | 5.6KB + 1.5KB CSS |
+
+## 文档
+
+- **[完整 API 说明](docs/api.md)** —— 四个包的 props / 事件 / 类型 / 用法
+- 各包的 README：[core](packages/core) · [vue](packages/vue) · [handwriting](packages/handwriting) · [model](packages/model)
 
 ## 为什么拆三个包
 
@@ -66,3 +75,17 @@ scripts/        构建期辅助脚本
 - **只提供 Vue3 绑定**。内核（core）本身零框架依赖，如果有 Vue2 / React 需求，
   可以基于 `createPinyinInput` 再包一层 DOM 版，目前没做——维护两份 UI 代码不值得。
 - **不支持 SSR**：输入控件依赖 `window` / `ResizeObserver`，需要 `<ClientOnly>` 或动态导入。
+
+## 许可证
+
+代码采用 [MIT](LICENSE)。
+
+词库与模型包含第三方成果，各自的许可与来源见
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)：
+
+- 词条与词频来自 [jieba](https://github.com/fxsjy/jieba)（MIT）
+- bigram 统计派生自 OpenSubtitles 语料（经 [OPUS](https://opus.nlpl.eu/) 分发，许可以其页面为准）
+- 手写库与模型来自 [HanScribe](https://github.com/peterolson/hanscribe)（MIT）
+
+如果你把这些包用于商业项目，建议同时保留本仓库的 `LICENSE` 和
+`THIRD_PARTY_NOTICES.md`。
