@@ -1,6 +1,6 @@
 {
   "name": "@startsi/pinyin-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "中文拼音输入法内核：词图 DP、模糊音、简拼、姓名候选、bigram 语言模型。纯 TS，零框架依赖。",
   "type": "module",
   "main": "./dist/index.cjs",

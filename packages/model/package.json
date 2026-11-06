@@ -1,6 +1,6 @@
 {
   "name": "@startsi/handwriting-model",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HanScribe 中文手写识别模型（7.5MB，4 层 BiLSTM，12361 字）。配套 @startsi/vue-handwriting 使用。",
   "type": "module",
   "main": "./index.js",

@@ -26,6 +26,7 @@
 
 - **[完整 API 说明](docs/api.md)** —— 四个包的 props / 事件 / 类型 / 用法
 - 各包的 README：[core](packages/core) · [vue](packages/vue) · [handwriting](packages/handwriting) · [model](packages/model)
+- 开发与发布流程：[CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## 为什么拆三个包
 
@@ -40,16 +41,6 @@ npm install
 npm run build     # 依次构建 core → handwriting → vue
 npm test          # core 的 15 组用例（node:test，无额外依赖）
 npm run dev       # playground，http://localhost:5180
-```
-
-## 发布
-
-```bash
-# 三包版本号要一起改
-npm version 0.1.1 --workspaces
-npm publish --workspace packages/core --access public
-npm publish --workspace packages/handwriting --access public
-npm publish --workspace packages/vue --access public
 ```
 
 ## 词库与模型

@@ -1,6 +1,6 @@
 {
   "name": "@startsi/vue-handwriting",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue3 中文手写板组件：HanScribe 神经网络识别，离线可用，模型可自定义加载。",
   "type": "module",
   "main": "./dist/index.cjs",

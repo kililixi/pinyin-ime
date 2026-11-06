@@ -1,6 +1,6 @@
 {
   "name": "@startsi/vue-pinyin-ime",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue3 中文拼音输入控件：九宫格/全键盘、词组候选、模糊音、简拼、联想，不依赖任何 UI 框架。",
   "type": "module",
   "main": "./dist/index.cjs",

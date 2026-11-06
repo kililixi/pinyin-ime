@@ -11,7 +11,7 @@
     "dev": "npm run dev -w playground",
     "build:playground": "npm run build -w playground",
     "test": "npm run test -w @startsi/pinyin-core",
-    "publish:all": "npm publish -w @startsi/pinyin-core --access public && npm publish -w @startsi/vue-handwriting --access public && npm publish -w @startsi/handwriting-model --access public && npm publish -w @startsi/vue-pinyin-ime --access public"
+    "publish:all": "node scripts/publish.mjs"
   },
   "devDependencies": {
     "typescript": "^4.9.5",
