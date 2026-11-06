@@ -2,9 +2,14 @@
   "name": "pinyin-ime-workspace",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*",
+    "playground"
+  ],
   "scripts": {
     "build": "npm run build -w @startsi/pinyin-core && npm run build -w @startsi/vue-handwriting && npm run build -w @startsi/vue-pinyin-ime",
+    "dev": "npm run dev -w playground",
+    "build:playground": "npm run build -w playground",
     "test": "npm run test -w @startsi/pinyin-core"
   },
   "devDependencies": {

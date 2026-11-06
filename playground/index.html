@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 手写需要：blob worker + wasm 编译授权 -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; worker-src 'self' blob:;"
+    />
+    <title>pinyin-ime playground</title>
+    <style>
+      body {
+        background: #f5f7fa;
+        color: #1c1e21;
+        font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        margin: 0;
+        padding: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
