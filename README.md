@@ -34,5 +34,25 @@ npm publish --workspace packages/vue --access public
 
 ## 词库与模型
 
-- **拼音词库 / bigram 语言模型**打包在 `@startsi/pinyin-core` 里（MIT，来自 jieba + OpenSubtitles）
-- **手写模型 7.5MB** 不在包里，由使用方提供（见 `vue-handwriting` 的 `loadModel` / `modelUrl`）
+- **拼音词库 / bigram 语言模型**打包在 `@startsi/pinyin-core` 里，由 jieba 词表 + 字幕词频派生
+- **手写模型 7.5MB** 单独发在 `@startsi/handwriting-model`，不需要手写的项目不会下到它
+
+数据来源与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## 目录
+
+```
+packages/
+  core/         输入法内核（纯 TS）
+  vue/          Vue3 输入控件
+  handwriting/  Vue3 手写板
+  model/        手写模型
+playground/     本地演示（npm run dev）
+scripts/        构建期辅助脚本
+```
+
+## 已知取舍
+
+- **只提供 Vue3 绑定**。内核（core）本身零框架依赖，如果有 Vue2 / React 需求，
+  可以基于 `createPinyinInput` 再包一层 DOM 版，目前没做——维护两份 UI 代码不值得。
+- **不支持 SSR**：输入控件依赖 `window` / `ResizeObserver`，需要 `<ClientOnly>` 或动态导入。

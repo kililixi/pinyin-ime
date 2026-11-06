@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node ../scripts/copy-model.mjs",
     "dev": "vite --port 5180",
+    "prebuild": "node ../scripts/copy-model.mjs",
     "build": "vite build"
   },
   "dependencies": {
