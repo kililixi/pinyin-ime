@@ -91,9 +91,32 @@ press(key: KeyInput): PressResult
   f: number        // 词频
   len: number      // 选中后消耗几个输入字符
   score: number    // 排序分（调试用）
+  py?: string      // 来源拼音（九宫格用）
   type: 'sentence' | 'word' | 'char' | 'initial' | 'name' | 'predict'
 }
 ```
+
+#### 九宫格音节（两级候选）
+
+九宫格一个数字串能对应多个音节（`56` 可能是 `kong` / `kou` / `lou`），
+把可能的音节先摆出来，用户点一下再收窄到该音节的词——这就是「两级候选」。
+
+```ts
+type(e, '56')
+engine.syllableOptions()   // ['kou', 'lou', 'kong', 'long']
+engine.setSyllableFilter('kong')
+engine.all().map(c => c.w) // 控制 / 恐怕 / 空 / 空间 / 空气 / 恐惧 / 空中…
+engine.displayPreedit      // 'kong'
+engine.activeSyllable      // 'kong'
+
+engine.setSyllableFilter(null)  // 取消
+```
+
+| 成员 | 说明 |
+|---|---|
+| `syllableOptions(limit?)` | 当前数字串可能的音节，按词频排序；少于 2 个时返回 `[]` |
+| `setSyllableFilter(py \| null)` | 手选音节，只留该音节的词；传 `null` 取消 |
+| `activeSyllable` | 当前选中的音节（输入变化后自动变 `null`） |
 
 #### 上下文与模型
 
@@ -219,6 +242,24 @@ npm i @startsi/vue-pinyin-ime @startsi/pinyin-core @startsi/vue-handwriting
 | `confirm` | — | 点「确认」 |
 | `commit` | `text: string` | 每次上屏（选词/手写） |
 | `error` | `message: string` | 手写模型加载失败等 |
+
+### 音节候选条
+
+九宫格下候选条头部会多出一排音节按钮（`kong` / `kou` / `lou`），
+点击即筛选，再点取消。想自己控制可以拆出 `CandidateBar`：
+
+```vue
+<CandidateBar
+  :preedit="preedit"
+  :candidates="candidates"
+  :page="page"
+  :page-count="pageCount"
+  :syllables="syllables"
+  :active-syllable="active"
+  @select="onSelect"
+  @pick-syllable="(py) => ..."
+/>
+```
 
 ### 插槽
 

@@ -126,6 +126,36 @@ test('九宫格前缀联想', () => {
   assert.ok(e.all().length > 0, '两个数字也要出候选')
 })
 
+test('九宫格音节候选与筛选', () => {
+  preloadT9()
+  const e = new PinyinEngine({ mode: 't9' })
+  type(e, '56')
+  const options = e.syllableOptions()
+  assert.ok(options.length > 1, `56 应有多个音节：${options}`)
+  assert.ok(options.includes('kong') || options.includes('kou'), `应含 kong/kou：${options}`)
+
+  // 选音节后只剩该音节的词
+  e.setSyllableFilter('kong')
+  const kongWords = e.all().map((c) => c.w)
+  assert.ok(kongWords.length > 0)
+  assert.ok(
+    kongWords.every((w) => ["控制", "恐怕", "空", "空间", "空气", "恐惧", "空中", "恐怖", "空军"].includes(w)),
+    `kong 过滤后混入了别的词：${kongWords}`
+  )
+  assert.equal(e.displayPreedit, 'kong')
+  assert.equal(e.activeSyllable, 'kong')
+
+  // 再点一次取消
+  e.setSyllableFilter(null)
+  assert.equal(e.activeSyllable, null)
+  assert.ok(e.all().some((c) => c.w === '龙'), '取消过滤后应恢复全部候选')
+
+  // 输入变化后过滤自动失效
+  e.setSyllableFilter('kong')
+  e.press({ t: 'char', v: '8' })
+  assert.equal(e.activeSyllable, null, '继续按键后音节过滤应失效')
+})
+
 test('拼音模式只接受字母，九宫格只接受数字', () => {
   const p = new PinyinEngine()
   assert.equal(p.press({ t: 'char', v: '5' }).type, 'unhandled')

@@ -12,8 +12,10 @@ import {
   getBucket,
   getFollowWords,
   getInitialsBucket,
+  getSyllableCompletions,
   getT9Bucket,
   getT9PrefixBucket,
+  toDigits,
 } from './lexicon'
 import { buildNameCandidates } from './names'
 import type {
@@ -37,6 +39,8 @@ const EXACT_BONUS = 0.9
 const NAME_PENALTY = 2
 /** 前缀联想的分数折损 */
 const PREDICT_PENALTY = 1.5
+/** 命中用户手选音节的加成 */
+const SYLLABLE_BONUS = 6
 /** 超过这个长度就不再走前缀联想（基本都能精确命中） */
 const PREDICT_MAX_LEN = 4
 
@@ -109,6 +113,8 @@ export class PinyinEngine {
   private lmProvider: LmProvider | null = null
   /** 已上屏的上下文（光标前的内容），用于组词结束后的联想 */
   private context = ''
+  /** 九宫格手选的音节过滤（kong / kou …），为 null 表示不过滤 */
+  private syllableFilter: string | null = null
   private fuzzyCache = new Map<string, Scored[]>()
   private userCache = new Map<string, number>()
 
@@ -131,6 +137,37 @@ export class PinyinEngine {
   setLmProvider(provider: LmProvider | null): void {
     this.lmProvider = provider
     this.dirty = true
+  }
+
+  /**
+   * 九宫格：手选一个音节，候选优先出这个音节开头的词。
+   * 传 null 取消。
+   */
+  setSyllableFilter(pinyin: string | null): void {
+    if (pinyin === this.syllableFilter) return
+    this.syllableFilter = pinyin
+    this.dirty = true
+  }
+
+  /** 当前手选的音节（输入变化后自动失效） */
+  get activeSyllable(): string | null {
+    if (
+      this.syllableFilter &&
+      !toDigits(this.syllableFilter).startsWith(this.preedit)
+    ) {
+      this.syllableFilter = null
+    }
+    return this.syllableFilter
+  }
+
+  /**
+   * 九宫格音节候选：给当前数字串列出可能的音节（56 -> kong / kou / lou）。
+   * 只有一个可能、或不是九宫格时返回空数组。
+   */
+  syllableOptions(limit = 6): string[] {
+    if (this.opts.mode !== 't9' || !this.preedit) return []
+    const options = getSyllableCompletions(this.preedit, limit + 1)
+    return options.length > 1 ? options.slice(0, limit).map((o) => o.py) : []
   }
 
   /**
@@ -435,6 +472,10 @@ export class PinyinEngine {
   private rebuild(): void {
     this.dirty = false
     const preedit = this.preedit
+    // 输入变化后，之前选的音节可能已经对不上了，自动失效
+    if (this.syllableFilter && !toDigits(this.syllableFilter).startsWith(preedit)) {
+      this.syllableFilter = null
+    }
     const L = preedit.length
     if (L === 0) {
       this.preeditDisplay = ''
@@ -505,8 +546,14 @@ export class PinyinEngine {
           w: c.w,
           f: c.f,
           len,
+          py: c.p,
           type: c.w.length === 1 ? 'char' : 'word',
-          score: this.score(c) + restScore,
+          score:
+            this.score(c) +
+            restScore +
+            (this.syllableFilter && c.p?.startsWith(this.syllableFilter)
+              ? SYLLABLE_BONUS
+              : 0),
         })
       }
     }
@@ -555,8 +602,15 @@ export class PinyinEngine {
 
     // 6. 前缀联想：刚开始只按了一两键、还没有完整解析时兜底
     //    56 -> 龙/隆/拢（long），同时把拼音显示成 lo
-    if (this.opts.mode === 't9' && !sentenceCandidate && L <= PREDICT_MAX_LEN) {
-      const prefix = getT9PrefixBucket(preedit)
+    if (
+      this.opts.mode === 't9' &&
+      (this.syllableFilter || (!sentenceCandidate && L <= PREDICT_MAX_LEN))
+    ) {
+      // 手选了音节就按那个音节取词（能拿到 扣/抠/寇 这些），否则按已输入的数字前缀
+      const lookupDigits = this.syllableFilter
+        ? toDigits(this.syllableFilter)
+        : preedit
+      const prefix = getT9PrefixBucket(lookupDigits)
       if (prefix) {
         for (const c of prefix) {
           if (seen.has(c.w)) continue
@@ -565,16 +619,30 @@ export class PinyinEngine {
             w: c.w,
             f: c.f,
             len: L,
+            py: c.p,
             type: 'predict',
-            score: this.score(c) - PREDICT_PENALTY,
+            score:
+              this.score(c) -
+              PREDICT_PENALTY +
+              (this.syllableFilter && c.p?.startsWith(this.syllableFilter)
+                ? SYLLABLE_BONUS
+                : 0),
           })
         }
         // 九宫格靠前缀联想时，把最优候选的拼音截到已按键数显示
         // （56 -> ko，568 -> kou）。手机输入法也是这样给反馈的。
-        if (!display && prefix[0]?.p) display = prefix[0].p.slice(0, L)
+        if (!display && prefix[0]?.p) {
+          display = this.syllableFilter || prefix[0].p.slice(0, L)
+        }
       }
     }
     this.preeditDisplay = display || preedit
+
+    // 手选了音节：只留这个音节的词（全被过滤掉时保留原样）
+    if (this.syllableFilter) {
+      const matched = out.filter((c) => c.py?.startsWith(this.syllableFilter!))
+      if (matched.length) out.length = 0, out.push(...matched)
+    }
 
     out.sort((a, b) => b.score - a.score)
     // 整句候选永远第一个：它代表「一次上屏全部输入」，

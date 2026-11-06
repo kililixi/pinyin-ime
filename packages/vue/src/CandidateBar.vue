@@ -10,8 +10,12 @@
       pageCount: number
       /** 竖排（左右分栏时用） */
       column?: boolean
+      /** 九宫格音节候选（kong / kou / lou…） */
+      syllables?: string[]
+      /** 当前选中的音节 */
+      activeSyllable?: string | null
     }>(),
-    { column: false }
+    { column: false, syllables: () => [], activeSyllable: null }
   )
 
   const emit = defineEmits<{
@@ -19,6 +23,8 @@
     (e: 'prev'): void
     (e: 'next'): void
     (e: 'cancel'): void
+    /** 点音节：传 null 表示取消过滤 */
+    (e: 'pickSyllable', py: string | null): void
   }>()
 
   const label = (index: number) =>
@@ -30,6 +36,17 @@
     <div class="pi-cand-head">
       <span v-if="preedit" class="pi-preedit">{{ preedit }}</span>
       <span v-else class="pi-hint">拼音候选</span>
+      <div v-if="syllables.length" class="pi-syllables">
+        <button
+          v-for="py in syllables"
+          :key="py"
+          type="button"
+          :class="['pi-syllable', py === activeSyllable ? 'is-active' : '']"
+          @click="emit('pickSyllable', py === activeSyllable ? null : py)"
+        >
+          {{ py }}
+        </button>
+      </div>
       <button
         v-if="preedit"
         class="pi-cancel"
@@ -109,6 +126,33 @@
   .pi-hint {
     color: #a8b6c5;
     font-size: 15px;
+  }
+
+  .pi-syllables {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 6px;
+    margin-left: 10px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .pi-syllable {
+    background: #f2f5f9;
+    border: 1px solid #d6e2ee;
+    border-radius: 999px;
+    color: #4a5866;
+    cursor: pointer;
+    font-size: 13px;
+    min-height: 28px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+
+  .pi-syllable.is-active {
+    background: #0057c2;
+    border-color: #0057c2;
+    color: #fff;
   }
 
   .pi-cancel {

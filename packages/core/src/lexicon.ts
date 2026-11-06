@@ -1,5 +1,6 @@
 /** 词库访问层：JSON 惰性解析 + 最近使用的小缓存 */
 import { RAW_DICT } from './dict/data'
+import { SYLLABLES } from './dict/meta'
 import { RAW_INITIALS } from './dict/initials'
 import type { LexCandidate } from './types'
 
@@ -98,7 +99,7 @@ const T9_DIGIT: Record<string, string> = {
 }
 
 /** 拼音键 -> 数字键，如 zhongguo -> 94664486 */
-function toDigits(key: string): string {
+export function toDigits(key: string): string {
   let out = ''
   for (let i = 0; i < key.length; i++) {
     const digit = T9_DIGIT[key[i]]
@@ -182,6 +183,46 @@ function buildT9Prefix(): Map<string, LexCandidate[]> {
 export function getT9PrefixBucket(digits: string): LexCandidate[] | undefined {
   if (!t9Prefix) t9Prefix = buildT9Prefix()
   return t9Prefix.get(digits)
+}
+
+// ------------------------------------------------------------------ 音节候选
+
+let syllableDigits: Array<{ py: string; digits: string; weight: number }> | null = null
+
+/**
+ * 所有音节的「数字串 -> 权重」表。
+ * 权重取该音节下最高频单字的词频，用来给音节候选排序，
+ * 例如 56 的补全按权重排是 kong > kou > lou > long。
+ */
+function ensureSyllableDigits() {
+  if (syllableDigits) return syllableDigits
+  const out: Array<{ py: string; digits: string; weight: number }> = []
+  for (const py of SYLLABLES) {
+    const digits = toDigits(py)
+    if (!digits) continue
+    const bucket = ensureT9().get(digits)
+    // 数字串会被多个音节共用（kong/long 都是 5664），取该桶最高频即可
+    const weight = bucket?.[0]?.f ?? 0
+    out.push({ py, digits, weight })
+  }
+  syllableDigits = out
+  return out
+}
+
+/**
+ * 九宫格音节补全：给当前数字串，列出以它开头的音节。
+ * 56 -> kong / kou / lou / long
+ */
+export function getSyllableCompletions(
+  digits: string,
+  limit = 6
+): Array<{ py: string; weight: number }> {
+  if (!digits) return []
+  return ensureSyllableDigits()
+    .filter((s) => s.digits.startsWith(digits))
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, limit)
+    .map((s) => ({ py: s.py, weight: s.weight }))
 }
 
 /** 预热九宫格索引与前缀表（切到 9 键时调一次） */
@@ -269,4 +310,5 @@ export function releaseLexicon(): void {
   t9Index = null
   t9Prefix = null
   charIndex = null
+  syllableDigits = null
 }

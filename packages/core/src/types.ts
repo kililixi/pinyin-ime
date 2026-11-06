@@ -18,6 +18,8 @@ export interface Candidate extends LexCandidate {
   type: 'sentence' | 'word' | 'char' | 'initial' | 'name' | 'predict'
   /** 内部排序分，调试用 */
   score: number
+  /** 来源拼音（九宫格用；手选音节时据此过滤） */
+  py?: string
 }
 
 export type InputMode = 'pinyin' | 't9'

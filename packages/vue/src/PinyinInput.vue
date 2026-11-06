@@ -83,6 +83,8 @@
 
   const preedit = ref('')
   const preeditDisplay = ref('')
+  const syllables = ref<string[]>([])
+  const activeSyllable = ref<string | null>(null)
   const candidates = ref<Candidate[]>([])
   const page = ref(0)
   const pageCount = ref(1)
@@ -177,6 +179,8 @@
     engine.setContext(value.value.slice(0, cursor.value))
     candidates.value = engine.list()
     preeditDisplay.value = engine.displayPreedit
+    syllables.value = engine.syllableOptions()
+    activeSyllable.value = engine.activeSyllable
     page.value = engine.page
     pageCount.value = engine.pageCount
   }
@@ -294,6 +298,12 @@
   const selectCandidate = (index: number) => applyKey({ t: 'select', i: index })
   const pageUp = () => applyKey({ t: 'pgup' })
   const pageDown = () => applyKey({ t: 'pgdn' })
+  /** 九宫格手选音节：筛选候选，再点一次取消 */
+  const pickSyllable = (py: string | null) => {
+    engine.setSyllableFilter(py)
+    refresh()
+  }
+
   const cancelComposition = () => {
     engine.reset()
     refresh()
@@ -507,7 +517,10 @@
               :candidates="candidates"
               :page="page"
               :page-count="pageCount"
+              :syllables="syllables"
+              :active-syllable="activeSyllable"
               @select="selectCandidate"
+              @pick-syllable="pickSyllable"
               @prev="pageUp"
               @next="pageDown"
               @cancel="cancelComposition"
