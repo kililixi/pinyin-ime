@@ -33,6 +33,14 @@
     "拼音输入法",
     "kiosk"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kililixi/pinyin-ime.git"
+  },
+  "homepage": "https://github.com/kililixi/pinyin-ime#readme",
+  "bugs": {
+    "url": "https://github.com/kililixi/pinyin-ime/issues"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
