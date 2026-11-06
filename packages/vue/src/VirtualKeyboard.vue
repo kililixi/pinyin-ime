@@ -80,8 +80,11 @@
     return key
   }
 
-  const lettersOf = (key: string): string =>
-    props.layoutName === 't9' ? T9_LETTERS[key] || '' : ''
+  /** 九宫格里数字键下方的小字母；1 没有字母，用不换行空格占位保证对齐 */
+  const lettersOf = (key: string): string => {
+    if (props.layoutName !== 't9' || !/^[1-9]$/.test(key)) return ''
+    return T9_LETTERS[key] || '\u00a0'
+  }
 
   // ---------------------------------------------------------------- 长按连删
   const LONG_DELAY = 450
@@ -139,7 +142,11 @@
         v-for="(key, k) in row"
         :key="k + key"
         type="button"
-        :class="['pi-key', key.startsWith('{') ? 'is-fn' : '']"
+        :class="[
+          'pi-key',
+          key.startsWith('{') ? 'is-fn' : '',
+          key === '{space}' ? 'is-space' : '',
+        ]"
         @pointerdown="onDown($event, key)"
         @pointerup="onUp"
         @pointercancel="onUp"
@@ -192,6 +199,11 @@
 
   .pi-key.is-fn {
     font-size: 20px;
+  }
+
+  /* 空格比普通键宽一倍 */
+  .pi-key.is-space {
+    flex: 2 1 0;
   }
 
   /* 九宫格：键更高，数字与字母上下排 */

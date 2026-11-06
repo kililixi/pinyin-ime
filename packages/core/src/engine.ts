@@ -164,6 +164,7 @@ export class PinyinEngine {
   }
 
   get pageCount(): number {
+    if (this.dirty) this.rebuild()
     return Math.max(1, Math.ceil(this.candidates.length / this.opts.pageSize))
   }
 

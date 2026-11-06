@@ -38,7 +38,8 @@
 ```bash
 npm install
 npm run build     # 依次构建 core → handwriting → vue
-npm test          # 跑 core 的 golden 用例
+npm test          # core 的 15 组用例（node:test，无额外依赖）
+npm run dev       # playground，http://localhost:5180
 ```
 
 ## 发布

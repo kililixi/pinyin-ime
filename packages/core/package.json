@@ -50,7 +50,8 @@
   },
   "scripts": {
     "build": "vite build",
-    "test": "node test/smoke.mjs"
+    "test": "node --test",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "vite": "^4.5.0",

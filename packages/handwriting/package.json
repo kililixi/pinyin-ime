@@ -44,7 +44,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "vue": "^3.2.0"
