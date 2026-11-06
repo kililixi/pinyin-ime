@@ -179,7 +179,8 @@
     engine.setContext(value.value.slice(0, cursor.value))
     candidates.value = engine.list()
     preeditDisplay.value = engine.displayPreedit
-    syllables.value = engine.syllableOptions()
+    // 分栏时右侧只有 30% 宽，音节按钮最多给 4 个，免得挤掉拼音和翻页
+    syllables.value = engine.syllableOptions(4)
     activeSyllable.value = engine.activeSyllable
     page.value = engine.page
     pageCount.value = engine.pageCount

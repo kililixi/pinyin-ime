@@ -104,10 +104,13 @@
 
   .pi-cand-head {
     align-items: center;
+    column-gap: 8px;
     display: flex;
     flex: 0 0 auto;
+    flex-wrap: wrap;
     justify-content: space-between;
     min-height: 40px;
+    row-gap: 4px;
   }
 
   .pi-preedit {
@@ -143,9 +146,10 @@
     border-radius: 999px;
     color: #4a5866;
     cursor: pointer;
-    font-size: 13px;
-    min-height: 28px;
-    padding: 2px 10px;
+    flex: 0 0 auto;
+    font-size: 12px;
+    min-height: 26px;
+    padding: 1px 9px;
     white-space: nowrap;
   }
 
