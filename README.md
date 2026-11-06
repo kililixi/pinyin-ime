@@ -26,7 +26,6 @@
 
 - **[完整 API 说明](docs/api.md)** —— 四个包的 props / 事件 / 类型 / 用法
 - 各包的 README：[core](packages/core) · [vue](packages/vue) · [handwriting](packages/handwriting) · [model](packages/model)
-- 开发与发布流程：[CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## 为什么拆三个包
 
