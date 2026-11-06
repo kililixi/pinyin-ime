@@ -3,6 +3,8 @@
 Vue3 中文手写板。识别器是 [HanScribe](https://github.com/peterolson/hanscribe)（MIT）：
 4 层 BiLSTM、12,361 字、纯 JS 推理跑在 Worker 里，**完全离线**。
 
+![手写板](../../docs/images/handwriting.jpg)
+
 ## 安装
 
 ```bash

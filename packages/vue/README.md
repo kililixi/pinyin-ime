@@ -2,6 +2,8 @@
 
 Vue3 中文拼音输入控件。**不依赖 Element / Ant / 任何 UI 框架**，也不需要 simple-keyboard。
 
+![九宫格](../../docs/images/keyboard-9.jpg)
+
 ## 安装
 
 ```bash

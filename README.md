@@ -2,6 +2,16 @@
 
 中文拼音输入法组件包，从「出入境自助填表系统」里抽出来的。
 
+## 效果
+
+| 九宫格（默认，键大） | 全键盘 |
+|---|---|
+| ![九宫格](docs/images/keyboard-9.jpg) | ![全键盘](docs/images/keyboard-qwerty.jpg) |
+
+| 手写（神经网络，离线） |
+|---|
+| ![手写](docs/images/handwriting.jpg) |
+
 | 包 | 说明 | 体积 |
 |---|---|---|
 | [`@startsi/pinyin-core`](packages/core) | 输入法内核：词图 DP、模糊音、简拼、姓名候选、bigram 语言模型。纯 TS，零框架依赖 | 2.5MB（gzip 1.4MB）<br>语言模型另 773KB |
