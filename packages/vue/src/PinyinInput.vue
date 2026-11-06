@@ -417,20 +417,41 @@
     }
   )
 
-  const viewportWidth = ref(
-    typeof window === 'undefined' ? 1280 : window.innerWidth
-  )
-  const onResize = () => (viewportWidth.value = window.innerWidth)
+  // 按「面板实际宽度」判断能不能分栏，窗口宽度不可靠（弹窗只有 90% 宽）
+  const panelWidth = ref(0)
+  let panelObserver: ResizeObserver | null = null
+
+  const measurePanel = () => {
+    if (panel.value) panelWidth.value = panel.value.clientWidth
+  }
 
   const split = computed(() => {
     if (props.layout === 'stack' || isNumeric.value) return false
-    if (viewportWidth.value < 1080) return false
+    if (panelWidth.value && panelWidth.value < 760) return false
     if (props.layout === 'split') return true
     return keyboardMode.value === 't9'
   })
 
-  onMounted(() => window.addEventListener('resize', onResize))
-  onBeforeUnmount(() => window.removeEventListener('resize', onResize))
+  watch(visible, (v) => {
+    if (!v) {
+      panelObserver?.disconnect()
+      panelObserver = null
+      return
+    }
+    nextTick(() => {
+      measurePanel()
+      if (panel.value && typeof ResizeObserver !== 'undefined') {
+        panelObserver = new ResizeObserver(measurePanel)
+        panelObserver.observe(panel.value)
+      }
+    })
+  })
+
+  onMounted(() => window.addEventListener('resize', measurePanel))
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', measurePanel)
+    panelObserver?.disconnect()
+  })
 
   defineExpose({ open, close })
 </script>
@@ -630,9 +651,15 @@
     flex-direction: row;
   }
 
+  /* DOM 里候选条在键盘前面，分栏时靠 order 把它挪到右边 */
   .pi-body.is-split .pi-cand {
-    flex: 0 0 32%;
-    min-width: 300px;
+    flex: 0 0 30%;
+    min-width: 280px;
+    order: 2;
+  }
+
+  .pi-body.is-split > .pi-kb {
+    order: 1;
   }
 
   .pi-body.is-stack {

@@ -7,11 +7,7 @@
  * 共用字母处崩掉（如 renminguangchang 里 min 与 guang 共用字母 g）。
  */
 import { MAX_KEY_LEN as DICT_MAX_KEY_LEN, TOTAL_FREQ } from './dict/meta'
-import {
-  DEFAULT_FUZZY_GROUPS,
-  fuzzyVariants,
-  isCompleteSyllables,
-} from './fuzzy'
+import { DEFAULT_FUZZY_GROUPS, fuzzyVariants } from './fuzzy'
 import {
   getBucket,
   getFollowWords,
@@ -572,13 +568,9 @@ export class PinyinEngine {
             score: this.score(c) - PREDICT_PENALTY,
           })
         }
-        if (!display && prefix[0]?.p) {
-          // 只有猜出来的拼音是完整音节才显示。
-          // 比如按 56 猜到控制(kongzhi) 的前两位是 "ko"，这不是合法音节，
-          // 显示 "ko" 只会让人困惑，这种情况保持显示数字。
-          const guess = prefix[0].p.slice(0, L)
-          if (isCompleteSyllables(guess)) display = guess
-        }
+        // 九宫格靠前缀联想时，把最优候选的拼音截到已按键数显示
+        // （56 -> ko，568 -> kou）。手机输入法也是这样给反馈的。
+        if (!display && prefix[0]?.p) display = prefix[0].p.slice(0, L)
       }
     }
     this.preeditDisplay = display || preedit
