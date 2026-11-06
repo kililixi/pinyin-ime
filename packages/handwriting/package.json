@@ -14,18 +14,35 @@
     },
     "./style.css": "./dist/style.css"
   },
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
-  "keywords": ["vue", "handwriting", "chinese", "手写", "canvas"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "author": "startsi <matenshi@163.com>",
   "license": "MIT",
+  "keywords": [
+    "vue",
+    "handwriting",
+    "chinese",
+    "手写",
+    "canvas"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
   "peerDependencies": {
     "vue": "^3.2.0"
   },
   "dependencies": {
     "hanscribe": "^0.4.0"
-  },
-  "scripts": {
-    "build": "vite build"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",

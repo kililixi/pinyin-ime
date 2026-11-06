@@ -14,19 +14,38 @@
     },
     "./style.css": "./dist/style.css"
   },
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
-  "keywords": ["vue", "pinyin", "ime", "input", "九宫格", "拼音输入法", "kiosk"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "author": "startsi <matenshi@163.com>",
   "license": "MIT",
+  "keywords": [
+    "vue",
+    "pinyin",
+    "ime",
+    "input",
+    "九宫格",
+    "拼音输入法",
+    "kiosk"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
   "peerDependencies": {
     "vue": "^3.2.0"
   },
   "dependencies": {
     "@startsi/pinyin-core": "^0.1.0",
     "@startsi/vue-handwriting": "^0.1.0"
-  },
-  "scripts": {
-    "build": "vite build"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",

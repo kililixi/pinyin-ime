@@ -10,7 +10,23 @@
     "./hz.hzmodel": "./hz.hzmodel",
     "./package.json": "./package.json"
   },
-  "files": ["index.js", "hz.hzmodel", "README.md"],
-  "keywords": ["handwriting", "chinese", "hanscribe", "model", "手写"],
-  "license": "MIT"
+  "files": [
+    "index.js",
+    "hz.hzmodel",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "startsi <matenshi@163.com>",
+  "license": "MIT",
+  "keywords": [
+    "handwriting",
+    "chinese",
+    "hanscribe",
+    "model",
+    "手写"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

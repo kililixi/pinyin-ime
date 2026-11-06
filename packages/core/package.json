@@ -21,9 +21,12 @@
   "files": [
     "dist",
     "lm.d.ts",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": false,
+  "author": "startsi <matenshi@163.com>",
+  "license": "MIT",
   "keywords": [
     "pinyin",
     "ime",
@@ -33,7 +36,10 @@
     "九宫格",
     "拼音"
   ],
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "vite build",
     "test": "node test/smoke.mjs"
